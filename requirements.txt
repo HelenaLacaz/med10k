@@ -1,5 +1,5 @@
 streamlit
-GSheetsConnection
+gsheetsconnection
 pandas
 time
 altair
