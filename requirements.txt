@@ -4,3 +4,4 @@ altair
 datetime
 Counter
 unidecode
+openpyxl
