@@ -20,9 +20,11 @@ st.set_page_config(
 
 
 @st.cache_data
-def load_data(url):
-    conn = st.connection('gsheets', type=GSheetsConnection)
-    df = conn.read(spreadsheet=url)
+def load_data(file, page):
+    #url = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
+    #conn = st.connection('gsheets', type=GSheetsConnection)
+    #df = conn.read(spreadsheet=url)
+    df = pd.read_excel(file, sheet_name=page)
     time.sleep(3)
     return df
 
@@ -38,11 +40,10 @@ st.sidebar.markdown('Dashboard desenvolvido para [Natlhalia Carvalho e Jaque Fra
 
 #---- Preparacao DataFrame
 
-url_nao_matriculados = 'https://docs.google.com/spreadsheets/d/15G1fceEst8fr2ORPzUGFtPpfOh9uwMIL1wcf36BAu4Q/edit?gid=1783509356#gid=1783509356'
+#url_nao_matriculados = 'https://docs.google.com/spreadsheets/d/15G1fceEst8fr2ORPzUGFtPpfOh9uwMIL1wcf36BAu4Q/edit?gid=1783509356#gid=1783509356'
 
-df_nao_matriculados = load_data(url_nao_matriculados)
+df_nao_matriculados = load_data('LEADS SVMM - GERAL.xlsx','Pesquisa')
 df_nao_matriculados = df_nao_matriculados[df_nao_matriculados["Matricula?"] == "F"]
-
 
 columns_list_nao_matriculados = list(df_nao_matriculados.columns.values.tolist())
 
@@ -78,9 +79,9 @@ df_nao_matriculados['Matricula'] = "Não"
 
 df_nao_matriculados_final = df_nao_matriculados[['Email','Idade','Regiao','Genero','Civil','Filhos','Escolaridade','Renda','Profissao','Seguidor','Matricula']]
 
-url_matriculados = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
+#url_matriculados = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
 
-df_matriculados = load_data(url_matriculados)
+df_matriculados = load_data('Matriculados.xlsx', 'M2')
 
 
 
@@ -135,7 +136,6 @@ df_matriculados.columns = columns_list_matriculados
 df_matriculados['Matricula'] = "Sim"
 
 df_matriculados_final = df_matriculados[['Email','Idade','Regiao','Genero','Civil','Filhos','Escolaridade','Renda','Profissao','Seguidor','Matricula']]
-
 
 union_all_df = pd.concat([df_nao_matriculados_final, df_matriculados_final], ignore_index=True)
 
@@ -283,9 +283,7 @@ chart = alt.Chart(importance_df).mark_bar().encode(
 # Exibindo o gráfico no Streamlit
 st.altair_chart(chart, use_container_width=True)
 
-
-
-st.bar_chart(importance_df, x='colunas', y='importância', horizontal=False)
+#st.bar_chart(importance_df, x='colunas', y='importância', horizontal=False)
 
 st.write('''
          

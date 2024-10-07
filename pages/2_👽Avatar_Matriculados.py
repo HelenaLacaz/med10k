@@ -16,27 +16,18 @@ st.set_page_config(
     page_icon='Avatar Matriculados'
 )
 
-
-#@st.cache_data
-#def load_data():
-#    url = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
-#    conn = st.connection('gsheets', type=GSheetsConnection)
-#    df_matriculados = conn.read(spreadsheet=url)
-#    time.sleep(3)
-#    return df_matriculados
-
 @st.cache_data
-def load_data(url):
+def load_data(file, page):
     #url = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
-    conn = st.connection('gsheets', type=GSheetsConnection)
-    df = conn.read(spreadsheet=url)
+    #conn = st.connection('gsheets', type=GSheetsConnection)
+    #df = conn.read(spreadsheet=url)
+    df = pd.read_excel(file, sheet_name=page)
     time.sleep(3)
     return df
 
-url_matriculados = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
+#url_matriculados = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
 
-df_matriculados = load_data(url_matriculados)
-#st.session_state["df_leads"] = df_leads
+df_matriculados = load_data('Matriculados.xlsx', 'M2')
 
 columns_list = list(df_matriculados.columns.values.tolist())
 
@@ -86,13 +77,10 @@ columns_list[44] = 'Ja_fez_consultoria'
 
 df_matriculados.columns = columns_list
 
-
-
-
 df_matriculados = df_matriculados.drop(['Del1'], axis=1)
 df_matriculados = df_matriculados.drop(['Del2'], axis=1)
 
-df_matriculados['Data'] = pd.to_datetime(df_matriculados['Data'].str.title(), infer_datetime_format=True)
+#df_matriculados['Data'] = pd.to_datetime(df_matriculados['Data'].str.title(), infer_datetime_format=True)
 
 df_matriculados['Turma'] = 'NaN'
 date_turma2 = datetime.date(2024, 9, 1)

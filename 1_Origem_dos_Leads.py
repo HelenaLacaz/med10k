@@ -13,15 +13,15 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    url = 'https://docs.google.com/spreadsheets/d/15G1fceEst8fr2ORPzUGFtPpfOh9uwMIL1wcf36BAu4Q/edit?gid=0#gid=0'
-    conn = st.connection('gsheets', type=GSheetsConnection)
-    df_leads = conn.read(spreadsheet=url)
+    #url = 'https://docs.google.com/spreadsheets/d/15G1fceEst8fr2ORPzUGFtPpfOh9uwMIL1wcf36BAu4Q/edit?gid=0#gid=0'
+    #conn = st.connection('gsheets', type=GSheetsConnection)
+    #df_leads = conn.read(spreadsheet=url)
+    df_leads = pd.read_excel('LEADS SVMM - GERAL.xlsx',sheet_name='Inscritos')
     time.sleep(3)
     return df_leads
 
 df_leads = load_data()
 #st.session_state["df_leads"] = df_leads
-
 columns_list = list(df_leads.columns.values.tolist())
 
 #--------- Logo & Titulo --------
