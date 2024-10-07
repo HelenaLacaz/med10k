@@ -2,7 +2,7 @@ streamlit
 pandas
 altair
 datetime
-collections
+Counter
 re
 unidecode
 sklearn.model_selection
