@@ -5,3 +5,4 @@ datetime
 Counter
 unidecode
 openpyxl
+sklearn

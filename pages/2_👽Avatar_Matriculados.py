@@ -80,7 +80,7 @@ df_matriculados = df_matriculados.drop(['Del2'], axis=1)
 #df_matriculados['Data'] = pd.to_datetime(df_matriculados['Data'].str.title(), infer_datetime_format=True)
 
 df_matriculados['Turma'] = 'NaN'
-date_turma2 = datetime.date(2024, 9, 1)
+date_turma2 = pd.Timestamp(datetime.date(2024, 9, 1))
 
 for index, row in df_matriculados.iterrows():
     if row['Data'] >= date_turma2:
