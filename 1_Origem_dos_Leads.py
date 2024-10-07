@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import time
+#import time
 import altair as alt
 
 #st.session_state["df_respondentes"]
@@ -16,7 +16,7 @@ def load_data():
     #conn = st.connection('gsheets', type=GSheetsConnection)
     #df_leads = conn.read(spreadsheet=url)
     df_leads = pd.read_excel('LEADS SVMM - GERAL.xlsx',sheet_name='Inscritos')
-    time.sleep(3)
+    #time.sleep(3)
     return df_leads
 
 df_leads = load_data()

@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import time
+#import time
 
 st.set_page_config(
     layout='wide',
@@ -14,7 +14,7 @@ def load_data(file, page):
     #conn = st.connection('gsheets', type=GSheetsConnection)
     #df = conn.read(spreadsheet=url)
     df = pd.read_excel(file, sheet_name=page)
-    time.sleep(3)
+    #time.sleep(3)
     return df
 
 df_respondentes = load_data('LEADS SVMM - GERAL.xlsx','Pesquisa')

@@ -1,6 +1,5 @@
 streamlit
 pandas
-time
 altair
 datetime
 collections

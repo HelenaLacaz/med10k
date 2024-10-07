@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import time
+#import time
 import datetime
 from collections import Counter 
 import re
@@ -19,7 +19,7 @@ def load_data(file, page):
     #conn = st.connection('gsheets', type=GSheetsConnection)
     #df = conn.read(spreadsheet=url)
     df = pd.read_excel(file, sheet_name=page)
-    time.sleep(3)
+    #time.sleep(3)
     return df
 
 #url_matriculados = 'https://docs.google.com/spreadsheets/d/1jU6I6H2pYhJajJVZqFreYudtIyepPMTbW1MGiUh4edg/edit?gid=1606288776#gid=1606288776'
