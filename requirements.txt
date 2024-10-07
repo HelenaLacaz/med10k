@@ -4,8 +4,3 @@ altair
 datetime
 Counter
 unidecode
-sklearn.model_selection
-sklearn 
-sklearn.preprocessing
-sklearn.linear_model
-
