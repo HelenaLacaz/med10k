@@ -1,15 +1,12 @@
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import time
-#import matplotlib.pyplot as plt
-#import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import Normalizer
+#from sklearn.preprocessing import StandardScaler
+#from sklearn.preprocessing import Normalizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import LinearRegression
+#from sklearn.linear_model import LinearRegression
 import altair as alt
 
 #st.session_state["df_respondentes"]

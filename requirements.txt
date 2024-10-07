@@ -1,5 +1,4 @@
 streamlit
-st-gsheets-connection
 pandas
 time
 altair
@@ -7,11 +6,8 @@ datetime
 collections
 re
 unidecode
-matplotlib.pyplot
-seaborn
 sklearn.model_selection
 sklearn 
 sklearn.preprocessing
-sklearn.preprocessing
 sklearn.linear_model
-sklearn.linear_model
+

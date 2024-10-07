@@ -1,13 +1,10 @@
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import time
 import datetime
 from collections import Counter 
 import re
 from unidecode import unidecode
-import matplotlib.pyplot as plt
-import seaborn as sns
 import altair as alt
 
 #st.session_state["df_respondentes"]
