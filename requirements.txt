@@ -3,7 +3,6 @@ pandas
 altair
 datetime
 Counter
-re
 unidecode
 sklearn.model_selection
 sklearn 
