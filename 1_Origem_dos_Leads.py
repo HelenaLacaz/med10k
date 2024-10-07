@@ -23,6 +23,8 @@ df_leads = load_data()
 #st.session_state["df_leads"] = df_leads
 columns_list = list(df_leads.columns.values.tolist())
 
+df_leads['utm_campaign'] = df_leads['utm_campaign'].str.replace(r'\[CAPTAÇÃO\]\s*', '', regex=True)
+
 #--------- Logo & Titulo --------
 st.image('logo1-1.png', width=220)
 #st.image('logo2-2.png', width=150)
@@ -120,17 +122,34 @@ st.sidebar.markdown('Dashboard desenvolvido para [Natlhalia Carvalho e Jaque Fra
 
 #-----------Gráficos-------------------
 
+
+#teste
+#test_df = df_resp_filtered8[['Renda_Lead','utm_campaign']]
+#test_df = test_df.dropna()
+#chart_test = alt.Chart(test_df).mark_circle(size=100).encode(
+#    x=alt.X('utm_campaign:N', title='Campanha'),  # Definindo o eixo X como nominal
+#    y=alt.Y('Renda_Lead:N', title='Renda Lead'),  # Definindo o eixo Y como nominal
+#    color='Renda_Lead:N',  # Colorir com base em uma das variáveis, pode remover se não for necessário
+#    tooltip=['Renda_Lead', 'utm_campaign']  # Adiciona tooltip para mostrar detalhes
+#).properties(
+#    title='Test',
+#    height=450,
+#    width=600  # Ajustando a largura para melhor visualização
+#).interactive()
+
+
+
 # Renda
 contagem_renda = df_resp_filtered8['Renda_Lead'].value_counts().reset_index() #contagem da coluna de interesse y
 contagem_renda.columns = ['Renda Lead', 'Contagem']
 contagem_renda = contagem_renda.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
 chart_renda = alt.Chart(contagem_renda).mark_bar().encode(
-    x=alt.X('Renda Lead:N', sort='-y'),
-    y='Contagem:Q'
+    x=alt.X('Renda Lead:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120)),  # Rotaciona os rótulos e define limite de tamanho),
+    y='Contagem:Q' 
 ).properties(
     title='Renda do Lead'
-)
+).interactive()
 
 # Idade
 contagem_idade = df_resp_filtered8['Idade_Lead'].value_counts().reset_index() #contagem da coluna de interesse y
@@ -142,19 +161,21 @@ chart_idade = alt.Chart(contagem_idade).mark_bar().encode(
     y='Contagem:Q'
 ).properties(
     title='Idade do Lead'
-)
+).interactive()
 
 # Genero
 contagem_genero = df_resp_filtered8['Genero_Lead'].value_counts().reset_index() #contagem da coluna de interesse y
 contagem_genero.columns = ['Genero Lead', 'Contagem']
 contagem_genero = contagem_genero.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
-chart_genero = alt.Chart(contagem_genero).mark_bar().encode(
-    x=alt.X('Genero Lead:N', sort='-y'),
-    y='Contagem:Q'
+chart_genero = alt.Chart(contagem_genero).mark_arc(innerRadius=50).encode(
+    #x=alt.X('Genero Lead:N', sort='-y'),
+    #y='Contagem:Q'
+    theta=alt.Theta('Contagem:Q'),
+    color = alt.Color('Genero Lead:N', legend=alt.Legend(orient='bottom', direction='horizontal', title='Gênero'))
 ).properties(
     title='Gênero do Lead'
-)
+).interactive()
 
 
 #Fonte do Lead
@@ -162,24 +183,24 @@ contagem_utm_source = df_resp_filtered8['utm_source'].value_counts().reset_index
 contagem_utm_source.columns = ['Fonte do Lead', 'Contagem']
 contagem_utm_source = contagem_utm_source.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
-chart_utm_source = alt.Chart(contagem_utm_source).mark_bar().encode(
+chart_utm_source = alt.Chart(contagem_utm_source).mark_bar(color= '#01B8AA').encode(
     x=alt.X('Fonte do Lead:N', sort='-y'),
     y='Contagem:Q'
 ).properties(
     title='Fonte do Lead'
-)
+).interactive()
 
 #Fonte Intermediaria Lead
 contagem_utm_medium = df_resp_filtered8['utm_medium'].value_counts().reset_index() #contagem da coluna de interesse y
 contagem_utm_medium.columns = ['Fonte do Lead', 'Contagem']
 contagem_utm_medium = contagem_utm_medium.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
-chart_utm_medium = alt.Chart(contagem_utm_medium).mark_bar().encode(
+chart_utm_medium = alt.Chart(contagem_utm_medium).mark_bar(color= '#01B8AA').encode(
     x=alt.X('Fonte do Lead:N', sort='-y'),
     y='Contagem:Q'
 ).properties(
     title='Fonte Intermediária do Lead'
-)
+).interactive()
 
 
 #Campanha
@@ -187,44 +208,50 @@ contagem_utm_campaign = df_resp_filtered8['utm_campaign'].value_counts()[:10].re
 contagem_utm_campaign.columns = ['Campanha', 'Contagem']
 contagem_utm_campaign = contagem_utm_campaign.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
-chart_utm_campaign = alt.Chart(contagem_utm_campaign).mark_bar().encode(
-    x=alt.X('Campanha:N', sort='-y'),
+chart_utm_campaign = alt.Chart(contagem_utm_campaign).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Campanha:N', sort='-y', axis=alt.Axis(labelLimit=150)),
     y='Contagem:Q'
 ).properties(
-    title='Campanha'
-)
+    title='Campanha',
+    height=450 
+).interactive()
 
 #Termometro
 contagem_utm_term = df_resp_filtered8['utm_term'].value_counts()[:10].reset_index() #contagem da coluna de interesse y
 contagem_utm_term.columns = ['Termometro', 'Contagem']
 contagem_utm_term = contagem_utm_term.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
-chart_utm_term = alt.Chart(contagem_utm_term).mark_bar().encode(
-    x=alt.X('Termometro:N', sort='-y'),
+chart_utm_term = alt.Chart(contagem_utm_term).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Termometro:N', sort='-y', axis=alt.Axis(labelLimit=150)),
     y='Contagem:Q'
 ).properties(
-    title='Termometro'
-)
+    title='Termometro',
+    height=450 
+).interactive()
 
 #Conteudo
 contagem_utm_content = df_resp_filtered8['utm_content'].value_counts()[:10].reset_index() #contagem da coluna de interesse y
 contagem_utm_content.columns = ['Conteudo', 'Contagem']
 contagem_utm_content = contagem_utm_content.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
-chart_utm_content= alt.Chart(contagem_utm_content).mark_bar().encode(
-    x=alt.X('Conteudo', sort='-y'),
+chart_utm_content= alt.Chart(contagem_utm_content).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Conteudo', sort='-y', axis=alt.Axis(labelLimit=150)),
     y='Contagem'
 ).properties(
-    title='Conteúdo'
-)
+    title='Conteúdo',
+    height=450 
+).interactive()
 
+st.write('#### Caracteristicas do Lead')
 # Exibindo o gráfico no Streamlit
+#st.altair_chart(chart_test)
+
 col1, col2, col3 = st.columns([0.4, 0.4, 0.2])
 col1.altair_chart(chart_renda, use_container_width=True)
 col2.altair_chart(chart_idade, use_container_width=True)
 col3.altair_chart(chart_genero, use_container_width=True)
 
-
+st.write('#### Estratégias das Campanhas')
 # Exibindo o gráfico no Streamlit
 col1, col2 = st.columns(2)
 col1.altair_chart(chart_utm_source, use_container_width=True)

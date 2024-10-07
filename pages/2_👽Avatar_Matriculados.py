@@ -187,83 +187,206 @@ st.sidebar.markdown('Dashboard desenvolvido para [Natlhalia Carvalho e Jaque Fra
 
 
 #-----------Gráficos-------------------
-col1, col2 = st.columns(2)
-col1.subheader("Faixa de Renda")
-col1.bar_chart(df_resp_filtered7.groupby(['Renda'])['Email'].count(), horizontal=True, color='#01B8AA')
-col2.subheader("Escolaridade")
-col2.bar_chart(df_resp_filtered7.groupby(['Escolaridade'])['Email'].count(), horizontal=False, color='#01B8AA')
-
-
-col1, col2, col3 = st.columns([0.44, 0.4, 0.16])
-col1.subheader("Profissão")
-col1.bar_chart(df_resp_filtered7.Profissao.value_counts()[:10], horizontal=True, color='#01B8AA')
-col2.subheader("Seguidor a quanto tempo?")
-col2.bar_chart(df_resp_filtered7.groupby(['Seguidor'])['Email'].count(), horizontal=False, color='#01B8AA')
-col3.subheader("Como Conheceu o Med10K?")
-col3.bar_chart(df_resp_filtered7.ComoConheceu.value_counts()[:10], horizontal=False, color='#01B8AA')
-
-
-col1, col2, col3, col4 = st.columns([0.34, 0.16, 0.34, 0.16])
-col1.subheader("Idade")
-col1.bar_chart(df_resp_filtered7.groupby(['Idade'])['Email'].count(), horizontal=False, color='#01B8AA')
-col2.subheader("Gênero")
-col2.bar_chart(df_resp_filtered7.groupby(['Genero'])['Email'].count(), horizontal=False, color='#01B8AA')
-col3.subheader("Estado Civil")
-col3.bar_chart(df_resp_filtered7.groupby(['Civil'])['Email'].count(), horizontal=False, color='#01B8AA')
-col4.subheader("Tem Filhos?")
-col4.bar_chart(df_resp_filtered7.groupby(['Filhos'])['Email'].count(), horizontal=False, color='#01B8AA')
-
-
-col1, col2, col3, col4 = st.columns([0.2, 0.4, 0.2, 0.2])
-col1.subheader("Trabalha com Mrkt Médico?")
-col1.bar_chart(df_resp_filtered7.groupby(['Trab_mkt_med'])['Email'].count(), horizontal=False, color='#01B8AA')
-col2.subheader("Se sim, quanto tempo?")
-col2.bar_chart(df_resp_filtered7.groupby(['Trab_mkt_med_tempo'])['Email'].count(), horizontal=False, color='#01B8AA')
-col3.subheader("Possui Clientes Médicos?")
-col3.bar_chart(df_resp_filtered7.groupby(['Clientes_med'])['Email'].count(), horizontal=False, color='#01B8AA')
-col4.subheader("Pretende ter Agência?")
-col4.bar_chart(df_resp_filtered7.groupby(['Agencia'])['Email'].count(), horizontal=False, color='#01B8AA')
-
-
-# Contagem de valores para o eixo y
-#contagem_estado_civil = df_resp_filtered7['Civil'].value_counts().reset_index()
-
-# Renomeando as colunas
-#contagem_estado_civil.columns = ['Estado Civil', 'Contagem']
-
-# Ordenando o DataFrame pela contagem de forma descendente
-#contagem_estado_civil = contagem_estado_civil.sort_values(by='Contagem', ascending=False)
-
-# Plotando o gráfico
-#plt.figure(figsize=(4, 3))
-#sns.barplot(x='Estado Civil', y='Contagem', data=contagem_estado_civil)
-#plt.title('Estado Civil')
-
-# Exibindo no streamlit
-#st.pyplot(plt)
-
-
-# Contagem de valores para o eixo y
-contagem_estado_civil = df_resp_filtered7['Civil'].value_counts().reset_index()
-
-# Renomeando as colunas
-contagem_estado_civil.columns = ['Civil', 'Contagem']
-
-# Ordenando o DataFrame pela contagem de forma descendente
-contagem_estado_civil = contagem_estado_civil.sort_values(by='Contagem', ascending=False)
-
+# Renda
+contagem_renda = df_resp_filtered7['Renda'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_renda.columns = ['Faixa de Renda', 'Contagem']
+contagem_renda = contagem_renda.sort_values(by='Contagem', ascending=False) # ordenação
 # Criando o gráfico com Altair
-chart = alt.Chart(contagem_estado_civil).mark_bar().encode(
-    x=alt.X('Civil:N', sort='-y'),
-    y='Contagem:Q'
+chart_renda = alt.Chart(contagem_renda).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Faixa de Renda:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None)) 
 ).properties(
-    title='Estado Civil'
-)
+    title='Faixa de Renda'
+).interactive()
 
-# Exibindo o gráfico no Streamlit
-st.altair_chart(chart, use_container_width=True)
+# Idade
+contagem_idade = df_resp_filtered7['Idade'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_idade.columns = ['Idade', 'Contagem']
+contagem_idade = contagem_idade.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_idade = alt.Chart(contagem_idade).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Idade:N', sort='-y', title=None),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None))
+).properties(
+    title='Faixa de Idade'
+).interactive()
 
 
+# Escolaridade
+contagem_escol = df_resp_filtered7['Escolaridade'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_escol.columns = ['Escolaridade', 'Contagem']
+contagem_escol = contagem_escol.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_escol = alt.Chart(contagem_escol).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Escolaridade:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None))
+).properties(
+    title='Escolaridade',
+    height=450 
+).interactive()
+
+
+#Profissao
+contagem_profissao = df_resp_filtered7['Profissao'].value_counts()[:10].reset_index() #contagem da coluna de interesse y
+contagem_profissao.columns = ['Profissao', 'Contagem']
+contagem_profissao = contagem_profissao.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_profissao= alt.Chart(contagem_profissao).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Contagem', title=None),
+    y=alt.Y('Profissao', sort='-x', axis=alt.Axis(labelLimit=150, title=None))
+).properties(
+    title='Profissão Top10',
+    height=450 
+).interactive()
+
+
+# Seguidor
+contagem_seguidor = df_resp_filtered7['Seguidor'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_seguidor.columns = ['Seguidor', 'Contagem']
+contagem_seguidor = contagem_seguidor.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_seguidor = alt.Chart(contagem_seguidor).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Seguidor:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None)) 
+).properties(
+    title='Seguidor a quanto tempo?',
+    height=450 
+).interactive()
+
+
+# Como conheceu med10k
+contagem_10k = df_resp_filtered7['ComoConheceu'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_10k.columns = ['ComoConheceu', 'Contagem']
+contagem_10k = contagem_10k.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_10k = alt.Chart(contagem_10k).mark_arc(innerRadius=50).encode(
+    theta=alt.Theta('Contagem:Q'),
+    color = alt.Color('ComoConheceu:N', legend=alt.Legend(orient='bottom', direction='horizontal'), title=None)
+).properties(
+    title='Como conheceu o Med10k?'
+).interactive()
+
+
+# Genero
+contagem_genero = df_resp_filtered7['Genero'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_genero.columns = ['Genero', 'Contagem']
+contagem_genero = contagem_genero.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_genero = alt.Chart(contagem_genero).mark_arc(innerRadius=50).encode(
+    theta=alt.Theta('Contagem:Q'),
+    color = alt.Color('Genero:N', legend=alt.Legend(orient='bottom', direction='horizontal'), title=None)
+).properties(
+    title='Gênero'
+).interactive()
+
+
+# Filhos
+contagem_filhos = df_resp_filtered7['Filhos'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_filhos.columns = ['Filhos', 'Contagem']
+contagem_filhos = contagem_filhos.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_filhos = alt.Chart(contagem_filhos).mark_arc(innerRadius=50).encode(
+    theta=alt.Theta('Contagem:Q'),
+    color = alt.Color('Filhos:N', legend=alt.Legend(orient='bottom', direction='horizontal'), title=None)
+).properties(
+    title='Tem Filhos?'
+).interactive()
+
+#Civil
+contagem_civil = df_resp_filtered7['Civil'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_civil.columns = ['Civil', 'Contagem']
+contagem_civil = contagem_civil.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_civil = alt.Chart(contagem_civil).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Civil:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None)) 
+).properties(
+    title='Estado Civil',
+    height=450 
+).interactive()
+
+
+
+
+#Trab_mkt_med
+contagem_trab_mkt_med = df_resp_filtered7['Trab_mkt_med'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_trab_mkt_med.columns = ['Trab_mkt_med', 'Contagem']
+contagem_trab_mkt_med = contagem_trab_mkt_med.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_trab_mkt_med = alt.Chart(contagem_trab_mkt_med).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Trab_mkt_med:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None))
+).properties(
+    title='Trabalha com Mrkt Médico?',
+    height=450 
+).interactive()
+
+
+#Trab_mkt_med
+contagem_tempo = df_resp_filtered7['Trab_mkt_med_tempo'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_tempo.columns = ['Trab_mkt_med_tempo', 'Contagem']
+contagem_tempo = contagem_tempo.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_tempo = alt.Chart(contagem_tempo).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Trab_mkt_med_tempo:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None))
+).properties(
+    title='Se sim, quanto tempo?',
+    height=450 
+).interactive()
+
+
+#Tclientes Med
+contagem_clientes_med = df_resp_filtered7['Clientes_med'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_clientes_med.columns = ['Clientes_med', 'Contagem']
+contagem_clientes_med = contagem_clientes_med.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_clientes_med = alt.Chart(contagem_clientes_med).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Clientes_med:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None)) 
+).properties(
+    title='Possui Clientes Médicos?',
+    height=450 
+).interactive()
+
+
+#Agencia
+contagem_agencia = df_resp_filtered7['Agencia'].value_counts().reset_index() #contagem da coluna de interesse y
+contagem_agencia.columns = ['Agencia', 'Contagem']
+contagem_agencia = contagem_agencia.sort_values(by='Contagem', ascending=False) # ordenação
+# Criando o gráfico com Altair
+chart_agencia = alt.Chart(contagem_agencia).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Agencia:N', sort='-y', axis=alt.Axis(labelAngle=-90, labelLimit=120), title=None),  # Rotaciona os rótulos e define limite de tamanho),
+    y=alt.Y('Contagem:Q', axis=alt.Axis(title=None))
+).properties(
+    title='Pretende ter Agência?',
+    height=450 
+).interactive()
+
+
+col1, col2 = st.columns(2)
+col1.altair_chart(chart_renda, use_container_width=True)
+col2.altair_chart(chart_idade, use_container_width=True)
+
+col1, col2 = st.columns(2)
+col1.altair_chart(chart_profissao, use_container_width=True)
+col2.altair_chart(chart_escol, use_container_width=True)
+
+col1, col2 = st.columns([0.7, 0.3])
+col1.altair_chart(chart_seguidor, use_container_width=True)
+col2.altair_chart(chart_10k, use_container_width=True)
+
+col1, col2, col3 = st.columns(3)
+col1.altair_chart(chart_genero, use_container_width=True)
+col2.altair_chart(chart_civil, use_container_width=True)
+col3.altair_chart(chart_filhos, use_container_width=True)
+
+
+col1, col2, col3,col4 = st.columns([0.2, 0.4, 0.2, 0.2])
+col1.altair_chart(chart_trab_mkt_med, use_container_width=True)
+col2.altair_chart(chart_tempo, use_container_width=True)
+col3.altair_chart(chart_clientes_med, use_container_width=True)
+col4.altair_chart(chart_agencia, use_container_width=True)
 
 
 st.markdown('### 🔟 Palavras Mais Repedidas:')
@@ -278,7 +401,7 @@ def words_counter(df, column):
 
     by_word = []
     for word in by_word_v0:
-        if len(word) > 5:
+        if len(word) > 5 and word != 'nathalia' and word != 'medica' and word != 'minhas':
             by_word.append(word)
 
         else:
@@ -301,30 +424,87 @@ count_duvida = words_counter(df_resp_filtered7, 'Duvida')
 
 
 
-col1, col2, col3 = st.columns(3)
-col1.subheader('Maior Sonho')
-col1.bar_chart(count_sonho, x='Palavra', y='Contagem', x_label = 'Sonho', y_label= '', horizontal=True, color='#01B8AA')
-col2.subheader('Motivação')
-col2.bar_chart(count_motivo, x='Palavra', y='Contagem', x_label = 'Motivação', y_label= '', horizontal=True, color='#01B8AA')
-col3.subheader('Expectativa')
-col3.bar_chart(count_espera, x='Palavra', y='Contagem', x_label = 'Expectativa', y_label= '', horizontal=True, color='#01B8AA')
+#count_sonho
+contagem_sonho = count_sonho.sort_values(by='Contagem', ascending=False) # ordenação
+chart_sonho= alt.Chart(contagem_sonho).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Contagem', title=None),
+    y=alt.Y('Palavra', sort='-x', axis=alt.Axis(labelLimit=150, title=None))
+).properties(
+    title='Maior Sonho',
+    height=450 
+).interactive()
+
+
+#Motivação
+contagem_motivo = count_motivo.sort_values(by='Contagem', ascending=False) # ordenação
+chart_motivo= alt.Chart(contagem_motivo).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Contagem', title=None),
+    y=alt.Y('Palavra', sort='-x', axis=alt.Axis(labelLimit=150, title=None))
+).properties(
+    title='Motivação',
+    height=450 
+).interactive()
+
+
+
+#Expectativa
+contagem_expec = count_espera.sort_values(by='Contagem', ascending=False) # ordenação
+chart_expec= alt.Chart(contagem_expec).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Contagem', title=None),
+    y=alt.Y('Palavra', sort='-x', axis=alt.Axis(labelLimit=150, title=None))
+).properties(
+    title='Expectativa',
+    height=450 
+).interactive()
+
+
+#Dificuldades_MktMed
+contagem_dif = count_difmkt.sort_values(by='Contagem', ascending=False) # ordenação
+chart_dif= alt.Chart(contagem_dif).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Contagem', title=None),
+    y=alt.Y('Palavra', sort='-x', axis=alt.Axis(labelLimit=150, title=None))
+).properties(
+    title='Dificuldades em Mkt Médico',
+    height=450 
+).interactive()
+
+
+
+#Duvida
+contagem_duv = count_duvida.sort_values(by='Contagem', ascending=False) # ordenação
+chart_duv= alt.Chart(contagem_duv).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Contagem', title=None),
+    y=alt.Y('Palavra', sort='-x', axis=alt.Axis(labelLimit=150, title=None))
+).properties(
+    title='Alguma Dúvida?',
+    height=450 
+).interactive()
+
+
+
+#Dificuldades_MktMed
+contagem_satis = count_satis.sort_values(by='Contagem', ascending=False) # ordenação
+chart_satis= alt.Chart(contagem_satis).mark_bar(color= '#01B8AA').encode(
+    x=alt.X('Contagem', title=None),
+    y=alt.Y('Palavra', sort='-x', axis=alt.Axis(labelLimit=150, title=None))
+).properties(
+    title='Satisfação com o MED10K',
+    height=450 
+).interactive()
+
+
 
 col1, col2, col3 = st.columns(3)
-col1.subheader('Dificuldades em Mkt Médico')
-col1.bar_chart(count_difmkt, x='Palavra', y='Contagem', x_label = 'Dificuldades Mkt Med', y_label= '', horizontal=True, color='#01B8AA')
-col2.subheader('Alguma Dúvida?')
-col2.bar_chart(count_duvida, x='Palavra', y='Contagem', x_label = 'Dúvida', y_label= '', horizontal=True, color='#01B8AA')
-col3.subheader('Satisfação com o MED10K')
-col3.bar_chart(count_satis, x='Palavra', y='Contagem', x_label = 'Expectativa', y_label= '', horizontal=True, color='#01B8AA')
+col1.altair_chart(chart_sonho, use_container_width=True)
+col2.altair_chart(chart_motivo, use_container_width=True)
+col3.altair_chart(chart_expec, use_container_width=True)
 
 
-#------------- Origem matriculados----
+col1, col2, col3 = st.columns(3)
+col1.altair_chart(chart_dif, use_container_width=True)
+col2.altair_chart(chart_duv, use_container_width=True)
+col3.altair_chart(chart_satis, use_container_width=True)
 
-#url_leads_matriculados = 
-
-#st.markdown('### Origem dos :')
-
-#df_matriculados_utm = load_data(url_leads_matriculados)
 
 
 #-----Tabela-------
